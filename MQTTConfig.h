@@ -1,5 +1,4 @@
-#define MQTT_SERVER Set_Your_MQTT_Server_Here //  Fill in below, and delete this line
-//#define MQTT_SERVER "192.168.1.1"
+#define MQTT_SERVER "192.168.178.103"
 #define MQTT_PORT 1883
 
 
@@ -31,6 +30,5 @@
 
 #define MQTT_LWT MQTT_BASETOPIC "/LWT"
 
-#define MQTT_USER  Set_Your_MQTT_User_Name_Here // Fill in below and delete this line
-//#define MQTT_USER "USER"
-#define MQTT_PASS "PASS"
+#define MQTT_USER "mitsu"
+#define MQTT_PASS "mitsu"
