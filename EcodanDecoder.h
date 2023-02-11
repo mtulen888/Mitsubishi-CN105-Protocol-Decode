@@ -41,13 +41,22 @@
 
 #define PREAMBLESIZE 2
 
-static const char* const  HotWaterBoostStr = {"Off", "On"};
-static const char* const  SystemPowerModeString = {"Standby", "On"};
-static const char* const  SystemOperationModeString = {"Off", "Hot Water", "Heating", "Cooling", "Zero V", "Frost Protect", "Legionella", "Heating Eco"};
-static const char* const  HowWaterControlModeString = {"Normal", "Eco"};
-static const char* const  HeatingControlModeString = {"Temp", "Flow", "Compensation", "Cool", "Cool Flow", "Dry Up"};
-static const char* const  HolidayModetString = {"Off", "On"};
-static const char* const  HotWaterTimerString = {"On", "Off"};
+#define SYSTEM_POWER_MODE_STANDBY 0
+#define SYSTEM_POWER_MODE_ON 1
+
+#define HEATING_CONTROL_MODE_ZONE_TEMP 0x00
+#define HEATING_CONTROL_MODE_FLOW_TEMP 0x01
+#define HEATING_CONTROL_MODE_COMPENSATION 0x02
+#define HEATING_CONTROL_MODE_COOL_ZONE_TEMP 0x03
+#define HEATING_CONTROL_MODE_COOL_FLOW_TEMP 0x044
+#define HEATING_CONTROL_MODE_DRY_UP 0x05
+static const char* const HotWaterBoostStr[] = {"Off", "On"};
+static const char* const SystemPowerModeString[] = {"Standby", "On"};
+static const char* const SystemOperationModeString[] = {"Off", "Hot Water", "Heating", "Cooling", "Zero V", "Frost Protect", "Legionella", "Heating Eco"};
+static const char* const HowWaterControlModeString[] = {"Normal", "Eco"};
+static const char* const HeatingControlModeString[] = {"Temp", "Flow", "Compensation", "Cool", "Cool Flow", "Dry Up"};
+static const char* const HolidayModetString[] = {"Off", "On"};
+static const char* const HotWaterTimerString[] = {"On", "Off"};
 static const char* const COMPRESSORString[] = {"Normal", "Standby", "Defrost", "Wait"};
 
 // System Flags

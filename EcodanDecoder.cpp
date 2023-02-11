@@ -222,107 +222,54 @@ void ECODANDECODER::Process0x01(uint8_t * Buffer, EcodanStatus *Status)
 
 void ECODANDECODER::Process0x02(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t Defrost;
-
-  Defrost = Buffer[3];
-  Status->Defrost = Defrost;
+  Status->Defrost = Buffer[3];
 }
 
 void ECODANDECODER::Process0x04(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t CompressorFrequency;
-
-  CompressorFrequency = Buffer[1];
-  Status->CompressorFrequency = CompressorFrequency;
+  Status->CompressorFrequency = Buffer[1];
 }
 
 void ECODANDECODER::Process0x05(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t HotWaterBoost;
-
-  HotWaterBoost = Buffer[7];
-  Status->HotWaterBoostActive = HotWaterBoost;
+  Status->HotWaterBoostActive = Buffer[7];
   Status->UnknownMSG5 = Buffer[5];
 }
 void ECODANDECODER::Process0x07(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t OutputPower;
-
-  OutputPower = Buffer[6];
-  Status->OutputPower = OutputPower;
+  Status->OutputPower = Buffer[6];
 }
 
 void ECODANDECODER::Process0x09(uint8_t * Buffer, EcodanStatus *Status)
 {
-  //Buffer 12 & 13 Yet To Identify
-  float fZone1TempSetpoint, fZone2TempSetpoint;
-  float fZ1FlowSetpoint, fZ2FlowSetpoint, fLegionellaSetpoint;
-  float fHWTempDrop, fFlowTempMax, fFlowTempMin;
-
-  fZone1TempSetpoint = ((float)ExtractUInt16(Buffer, 1) / 100);
-  fZone2TempSetpoint = ((float)ExtractUInt16(Buffer, 3) / 100);
-  fZ1FlowSetpoint = ((float)ExtractUInt16(Buffer, 5) / 100);
-  fZ2FlowSetpoint = ((float)ExtractUInt16(Buffer, 7) / 100);
-  fLegionellaSetpoint = ((float)ExtractUInt16(Buffer, 9) / 100);
-
-  fHWTempDrop = ((float)(Buffer[11] - 40)) / 2;
-  fFlowTempMax = ((float)(Buffer[12] - 40)) / 2;
-  fFlowTempMin = ((float)(Buffer[13] - 40)) / 2;
-
-  Status->Zone1TemperatureSetpoint = fZone1TempSetpoint;
-  Status->Zone2TemperatureSetpoint = fZone2TempSetpoint;
-  Status->Zone1FlowTemperatureSetpoint = fZ1FlowSetpoint;
-  Status->Zone2FlowTemperatureSetpoint = fZ2FlowSetpoint;
-  Status->LegionellaSetpoint = fLegionellaSetpoint;
-  Status->HotWaterMaximumTempDrop = fHWTempDrop;
-  Status->FlowTempMax = fFlowTempMax;
-  Status->FlowTempMin = fFlowTempMin;
+  Status->Zone1TemperatureSetpoint = ((float)ExtractUInt16(Buffer, 1) / 100);
+  Status->Zone2TemperatureSetpoint = ((float)ExtractUInt16(Buffer, 3) / 100);
+  Status->Zone1FlowTemperatureSetpoint = ((float)ExtractUInt16(Buffer, 5) / 100);
+  Status->Zone2FlowTemperatureSetpoint = ((float)ExtractUInt16(Buffer, 7) / 100);
+  Status->LegionellaSetpoint = ((float)ExtractUInt16(Buffer, 9) / 100);
+  Status->HotWaterMaximumTempDrop = ((float)(Buffer[11] - 40)) / 2;
+  Status->FlowTempMax = ((float)(Buffer[12] - 40)) / 2;
+  Status->FlowTempMin = ((float)(Buffer[13] - 40)) / 2;
 }
 
 void ECODANDECODER::Process0x0B(uint8_t * Buffer, EcodanStatus *Status)
 {
-  float fZone1, fZone2, fOutside;
-
-  fZone1 = ((float)ExtractUInt16(Buffer, 1) / 100);
-  //Unknown = ((float)ExtractUInt16(Buffer, 3) / 100);
-  //Unknown = ((float)ExtractUInt16(Buffer, 5) / 100);
-  fZone2 = ((float)ExtractUInt16(Buffer, 7) / 100);
-  //Unknown = ((float)ExtractUInt16(Buffer, 9) / 100);
-  fOutside = ((float)Buffer[11] / 2) - 40;
-
-  Status->Zone1Temperature = fZone1;
-  Status->Zone2Temperature = fZone2;
-  Status->OutsideTemperature = fOutside;
+  Status->Zone1Temperature = ((float)ExtractUInt16(Buffer, 1) / 100);
+  Status->Zone2Temperature = ((float)ExtractUInt16(Buffer, 7) / 100);
+  Status->OutsideTemperature = ((float)Buffer[11] / 2) - 40;
 }
 
 void ECODANDECODER::Process0x0C(uint8_t * Buffer, EcodanStatus *Status)
 {
-  float fWaterHeatingFeed, fWaterHeatingReturn, fHotWater;
-  float T1, T2, T3;
-
-  fWaterHeatingFeed = ((float)ExtractUInt16(Buffer, 1) / 100);
-  T1 = ((float)Buffer[3] / 2) - 40;
-  fWaterHeatingReturn = ((float)ExtractUInt16(Buffer, 4) / 100);
-  T2 = ((float)Buffer[6] / 2) - 40;;
-  fHotWater = ((float)ExtractUInt16(Buffer, 7) / 100);
-  T3 = ((float)Buffer[9] / 2) - 40; ;
-
-  Status->HeaterOutputFlowTemperature = fWaterHeatingFeed;
-  Status->HeaterReturnFlowTemperature =   fWaterHeatingReturn;
-  Status->HotWaterTemperature = fHotWater;
+  Status->HeaterOutputFlowTemperature = ((float)ExtractUInt16(Buffer, 1) / 100);
+  Status->HeaterReturnFlowTemperature =   ((float)ExtractUInt16(Buffer, 4) / 100);
+  Status->HotWaterTemperature = ((float)ExtractUInt16(Buffer, 7) / 100);
 }
 
 void ECODANDECODER::Process0x0D(uint8_t * Buffer, EcodanStatus *Status)
 {
-  float fBoilerFlow, fBoilerReturn;
-
-  fBoilerFlow = ((float)ExtractUInt16(Buffer, 1) / 100);
-  fBoilerReturn = ((float)ExtractUInt16(Buffer, 4) / 100);
-  //Unknown = ((float)ExtractUInt16(Buffer, 7) / 100)
-  //Unknown = ((float)ExtractUInt16(Buffer, 10) / 100)
-
-  Status->ExternalBoilerFlowTemperature = fBoilerFlow;
-  Status->ExternalBoilerReturnTemperature = fBoilerReturn;
+  Status->ExternalBoilerFlowTemperature = ((float)ExtractUInt16(Buffer, 1) / 100);
+  Status->ExternalBoilerReturnTemperature = ((float)ExtractUInt16(Buffer, 4) / 100);
 }
 
 void ECODANDECODER::Process0x0E(uint8_t * Buffer, EcodanStatus *Status)
@@ -358,47 +305,29 @@ void ECODANDECODER::Process0x14(uint8_t * Buffer, EcodanStatus *Status)
 
 void ECODANDECODER::Process0x26(uint8_t * Buffer, EcodanStatus *Status)
 {
-  float fHWSetpoint;
-  float fExternalSetpoint, fExternalFlowTemp;
-  uint8_t SystemPowerMode, SystemOperationMode, HotWaterPowerMode;
-  uint8_t HeatingControlMode, HotWaterControlMode;
+  float fExternalFlowTemp;
   uint8_t Buffer7Flag;
-
-  SystemPowerMode = Buffer[3];
-  SystemOperationMode = Buffer[4];
-  HotWaterControlMode = Buffer[5];
-  HeatingControlMode = Buffer[6];
   Buffer7Flag = Buffer[7];
-
-  fHWSetpoint = ((float)ExtractUInt16(Buffer, 8) / 100);
-  fExternalSetpoint = ((float)ExtractUInt16(Buffer, 10) / 100);
   fExternalFlowTemp = ((float)ExtractUInt16(Buffer, 12) / 100);
 
-  Status->SystemPowerMode = SystemPowerMode;
-  Status->SystemOperationMode = SystemOperationMode;
-  Status->HotWaterControlMode = HotWaterControlMode;
-  Status->HeatingControlMode = HeatingControlMode;
-  Status->HotWaterSetpoint = fHWSetpoint;
-  Status->HeaterFlowSetpoint = fExternalSetpoint;
+  Status->SystemPowerMode = Buffer[3];
+  Status->SystemOperationMode = Buffer[4];
+  Status->HotWaterControlMode = Buffer[5];
+  Status->HeatingControlMode = Buffer[6];
+  Status->HotWaterSetpoint = ((float)ExtractUInt16(Buffer, 8) / 100);
+  Status->HeaterFlowSetpoint = ((float)ExtractUInt16(Buffer, 10) / 100);
 }
 
 
 void ECODANDECODER::Process0x28(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t HotWaterTimer;
-  uint8_t HolidayMode;
-
-  HotWaterTimer = Buffer[5];
-  HolidayMode = Buffer[4];
-
-  Status->HotWaterTimerActive = HotWaterTimer;
-  Status->HolidayModeActive = HolidayMode;
+  Status->HotWaterTimerActive = Buffer[5];
+  Status->HolidayModeActive = Buffer[4];
 }
 
 void ECODANDECODER::Process0x29(uint8_t * Buffer, EcodanStatus *Status)
 {
   float fZone1, fZone2;
-  float fFlowSetpoint, fFlowTemp, fWaterSetpoint;
 
   fZone1 = ((float)ExtractUInt16(Buffer, 4) / 100);
   fZone2 = ((float)ExtractUInt16(Buffer, 6) / 100);
@@ -406,46 +335,24 @@ void ECODANDECODER::Process0x29(uint8_t * Buffer, EcodanStatus *Status)
 
 void ECODANDECODER::Process0xA1(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t Year, Month, Day;
-  float ConsumedHeating, ConsumedCooling, ConsumedHotWater;
+  Status->ConsumedDateTimeStamp.tm_year = Buffer[1];
+  Status->ConsumedDateTimeStamp.tm_mon = Buffer[2];
+  Status->ConsumedDateTimeStamp.tm_mday = Buffer[3];
 
-  Year = Buffer[1];
-  Month = Buffer[2];
-  Day = Buffer[3];
-
-  ConsumedHeating = ExtractEnergy(Buffer, 4);
-  ConsumedCooling = ExtractEnergy(Buffer, 7);
-  ConsumedHotWater = ExtractEnergy(Buffer, 10);
-
-  Status->ConsumedDateTimeStamp.tm_year = Year;
-  Status->ConsumedDateTimeStamp.tm_mon = Month;
-  Status->ConsumedDateTimeStamp.tm_mday = Day;
-
-  Status->ConsumedHeatingEnergy = ConsumedHeating;
-  Status->ConsumedCoolingEnergy = ConsumedCooling;
-  Status->ConsumedHotWaterEnergy = ConsumedHotWater;
+  Status->ConsumedHeatingEnergy = ExtractEnergy(Buffer, 4);
+  Status->ConsumedCoolingEnergy = ExtractEnergy(Buffer, 7);
+  Status->ConsumedHotWaterEnergy = ExtractEnergy(Buffer, 10);
 }
 
 void ECODANDECODER::Process0xA2(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t Year, Month, Day;
-  float DeliveredHeating, DeliveredCooling, DeliveredHotWater;
+  Status->DeliveredDateTimeStamp.tm_year = Buffer[1];
+  Status->DeliveredDateTimeStamp.tm_mon = Buffer[2];
+  Status->DeliveredDateTimeStamp.tm_mday = Buffer[3];
 
-  Year = Buffer[1];
-  Month = Buffer[2];
-  Day = Buffer[3];
-
-  DeliveredHeating = ExtractEnergy(Buffer, 4);
-  DeliveredCooling = ExtractEnergy(Buffer, 7);
-  DeliveredHotWater = ExtractEnergy(Buffer, 10);
-
-  Status->DeliveredDateTimeStamp.tm_year = Year;
-  Status->DeliveredDateTimeStamp.tm_mon = Month;
-  Status->DeliveredDateTimeStamp.tm_mday = Day;
-
-  Status->DeliveredHeatingEnergy = DeliveredHeating;
-  Status->DeliveredCoolingEnergy = DeliveredCooling;
-  Status->DeliveredHotWaterEnergy = DeliveredHotWater;
+  Status->DeliveredHeatingEnergy = ExtractEnergy(Buffer, 4);
+  Status->DeliveredCoolingEnergy = ExtractEnergy(Buffer, 7);
+  Status->DeliveredHotWaterEnergy = ExtractEnergy(Buffer, 10);
 }
 
 float ECODANDECODER::ExtractEnergy(uint8_t *Buffer, uint8_t index)
