@@ -16,8 +16,6 @@
 */
 #include "EcodanDecoder.h"
 
-//#include <arduino.h>
-
 ECODANDECODER::ECODANDECODER(void)
 {
   memset(&RxMessage, 0, sizeof(MessageStruct));
@@ -201,23 +199,12 @@ uint8_t ECODANDECODER::BuildRxMessage(MessageStruct *Message, uint8_t c)
 
 void ECODANDECODER::Process0x01(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t Year, Month, Day;
-  uint8_t Hour, Min, Sec;
-
-  Year = Buffer[1];
-  Month = Buffer[2];
-  Day = Buffer[3];
-  Hour = Buffer[4];
-  Min = Buffer[5];
-  Sec = Buffer[6];
-
-  Status->DateTimeStamp.tm_year = Year;
-  Status->DateTimeStamp.tm_mon = Month;
-  Status->DateTimeStamp.tm_mday = Day;
-
-  Status->DateTimeStamp.tm_hour = Hour;
-  Status->DateTimeStamp.tm_min = Min;
-  Status->DateTimeStamp.tm_sec = Sec;
+  Status->DateTimeStamp.tm_year = Buffer[1];
+  Status->DateTimeStamp.tm_mon = Buffer[2];
+  Status->DateTimeStamp.tm_mday = Buffer[3];
+  Status->DateTimeStamp.tm_hour = Buffer[4];
+  Status->DateTimeStamp.tm_min = Buffer[5];
+  Status->DateTimeStamp.tm_sec = Buffer[6];
 }
 
 void ECODANDECODER::Process0x02(uint8_t * Buffer, EcodanStatus *Status)
@@ -282,34 +269,17 @@ void ECODANDECODER::Process0x0E(uint8_t * Buffer, EcodanStatus *Status)
 
 void ECODANDECODER::Process0x13(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint32_t RunHours;
-
-  RunHours = Buffer[4];
-  RunHours = RunHours << 8;
-  RunHours += Buffer[5];
-  RunHours *= 100;
-  RunHours += Buffer[3];
-
-  Status->RunHours = RunHours;
+  Status->RunHours = 100 * (Buffer[4] << 8 + Buffer[5]) + Buffer[3];
 }
 
 
 void ECODANDECODER::Process0x14(uint8_t * Buffer, EcodanStatus *Status)
 {
-  uint8_t FlowRate;
-
-  FlowRate = Buffer[12];
-
-  Status->PrimaryFlowRate = FlowRate;
+  Status->PrimaryFlowRate = Buffer[12];
 }
 
 void ECODANDECODER::Process0x26(uint8_t * Buffer, EcodanStatus *Status)
 {
-  float fExternalFlowTemp;
-  uint8_t Buffer7Flag;
-  Buffer7Flag = Buffer[7];
-  fExternalFlowTemp = ((float)ExtractUInt16(Buffer, 12) / 100);
-
   Status->SystemPowerMode = Buffer[3];
   Status->SystemOperationMode = Buffer[4];
   Status->HotWaterControlMode = Buffer[5];
@@ -317,7 +287,6 @@ void ECODANDECODER::Process0x26(uint8_t * Buffer, EcodanStatus *Status)
   Status->HotWaterSetpoint = ((float)ExtractUInt16(Buffer, 8) / 100);
   Status->HeaterFlowSetpoint = ((float)ExtractUInt16(Buffer, 10) / 100);
 }
-
 
 void ECODANDECODER::Process0x28(uint8_t * Buffer, EcodanStatus *Status)
 {
